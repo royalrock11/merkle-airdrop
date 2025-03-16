@@ -1,66 +1,72 @@
-## Foundry
+# Merkle Airdrop
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
 
-Foundry consists of:
+Merkle Airdrop is a project designed to distribute tokens to a large number of recipients efficiently using a Merkle tree. This approach ensures that the distribution is secure, scalable, and cost-effective.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Features
 
-## Documentation
+- **Efficient Distribution**: Uses Merkle trees to minimize the amount of data that needs to be stored and transmitted.
+- **Secure**: Ensures that only eligible recipients can claim their tokens.
+- **Scalable**: Can handle a large number of recipients without significant performance degradation.
 
-https://book.getfoundry.sh/
+## Installation
+
+To get started with the Merkle Airdrop project, follow these steps:
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/royalrock11/merkle-airdrop.git
+   cd merkle-airdrop
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Compile the contracts**:
+   ```bash
+   npx hardhat compile
+   ```
 
 ## Usage
 
-### Build
+### Generating the Merkle Tree
 
-```shell
-$ forge build
+To generate the Merkle tree, you need a list of recipients and their corresponding token amounts. Use the provided script to generate the tree:
+
+```bash
+see Makefile
 ```
 
-### Test
+### Deploying the Contract
 
-```shell
-$ forge test
+Deploy the Merkle Airdrop contract to your desired network:
+
+```bash
+see Makefile
 ```
 
-### Format
+### Claiming Tokens
 
-```shell
-$ forge fmt
+Recipients can claim their tokens by providing a proof generated from the Merkle tree:
+
+```javascript
+const proof = getMerkleProof(recipientAddress);
+await merkleAirdropContract.claimTokens(proof, { from: recipientAddress });
 ```
 
-### Gas Snapshots
+## Contributing
 
-```shell
-$ forge snapshot
-```
+We welcome contributions to the Merkle Airdrop project! Please fork the repository and submit pull requests.
 
-### Anvil
+## License
 
-```shell
-$ anvil
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### Deploy
+## Contact
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+For any questions or inquiries, please open an issue or contact us at [x.com].
