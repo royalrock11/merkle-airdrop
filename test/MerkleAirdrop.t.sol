@@ -14,6 +14,7 @@ contract MerkleAirdropTest is Test {
     bytes32 public ROOT =
         0xaa5d581231e596618465a56aa0f5870ba6e20785fe436d5bfb82b08662ccc7c4;
     address public user;
+    address public gasPayer;
     uint256 public userPriKey;
     uint256 public AMOUNT_TO_CLAIM = 25 * 1e18;
     uint256 public AMOUNT_TO_SEND = AMOUNT_TO_CLAIM * 4;
@@ -32,6 +33,7 @@ contract MerkleAirdropTest is Test {
         token.mint(token.owner(), AMOUNT_TO_SEND);
         token.transfer(address(airdrop), AMOUNT_TO_SEND);
         (user, userPriKey) = makeAddrAndKey("user");
+        gasPayer = makeAddr("gasPayer");
     }
 
     /// @notice Tests that users can claim their tokens from the airdrop
@@ -40,8 +42,14 @@ contract MerkleAirdropTest is Test {
         uint256 startingBalance = token.balanceOf(user);
 
         // Act
-        vm.prank(user);
-        airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF);
+        bytes32 digest = airdrop.getMessageHash(user, AMOUNT_TO_CLAIM);
+        // sign a message
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPriKey, digest);
+
+        // gasPayer calls claim using the signed message
+        vm.prank(gasPayer);
+        airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF, v, r, s);
 
         // Assert
         uint256 endingBalance = token.balanceOf(user);
